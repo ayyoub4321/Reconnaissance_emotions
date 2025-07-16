@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Recognition</title>
+     <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/tailwind.min2.css' %}">
+    <script src="{% static 'js/script.js' %}" defer></script>
+    <style>
+        /* Styles personnalisés pour compléments spécifiques */
+        .drop-zone {
+            transition: all 0.3s ease;
+        }
+        .drop-zone:hover {
+            background-color: #4b5efc;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col">
+    {% include "part/header.html" %}
+
+    <main class="flex-grow">
+        <div class="container max-w-3xl mx-auto my-12 p-8 bg-gray-800 rounded-2xl shadow-2xl animate__animated animate__fadeIn">
+            <!-- Titre -->
+            <h1 class="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500 flex items-center mb-8">
+                <span class="text-5xl mr-2 animate__animated animate__bounceIn">😒</span> Emotion Recognition
+            </h1>
+
+            <!-- Sous-titre -->
+            <h2 class="text-2xl font-semibold text-indigo-300 mb-6">Charger une image</h2>
+
+            <!-- Formulaire -->
+            <form action="" method="post" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+                <div class="upload-container">
+                    <!-- Zone de dépôt -->
+                    <div id="img" class="flex justify-center">
+                        <label for="file-input" class="drop-zone flex flex-col items-center justify-center w-full h-48 bg-gray-700 rounded-xl border-2 border-dashed border-indigo-400 cursor-pointer hover:bg-indigo-600 transition-all duration-300">
+                            <i class="fas fa-upload text-3xl text-indigo-300 mb-2 animate__animated animate__pulse animate__infinite"></i>
+                            <p class="text-gray-300 text-lg">Déposez une image ici ou sélectionnez un fichier</p>
+                        </label>
+                    </div>
+                    <input type="file" id="file-input" name="image" accept="image/*" class="hidden" />
+                    <input type="hidden" name="hidden" value="default_value">
+
+                    <!-- Informations sur le fichier et bouton Parcourir -->
+                    <div class="file-info flex items-center justify-between mt-4">
+                        <span id="file-name" class="text-gray-400">Aucun fichier sélectionné</span>
+                        <button id="browse-button" type="button" class="px-4 py-2 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition-all duration-300">Parcourir...</button>
+                    </div>
+
+                    <!-- Bouton Exécuter -->
+                    <button id="execute-button" type="submit" class="w-full mt-6 px-6 py-3 text-lg font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-lg hover:from-indigo-600 hover:to-purple-700 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                        Exécuter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Script pour gérer l'affichage du nom du fichier -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('file-input');
+            const fileNameDisplay = document.getElementById('file-name');
+            const browseButton = document.getElementById('browse-button');
+
+            // Afficher le nom du fichier sélectionné
+            fileInput.addEventListener('change', () => {
+                fileNameDisplay.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : 'Aucun fichier sélectionné';
+            });
+
+            // Simuler le clic sur l'input file avec le bouton Parcourir
+            browseButton.addEventListener('click', () => {
+                fileInput.click();
+            });
+        });
+    </script>
+</body>
+</html>

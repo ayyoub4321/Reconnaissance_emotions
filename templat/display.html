@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emotion Recognition Result</title>
+  <!-- Intégration de Tailwind CSS via CDN -->
+
+  <script src="{% static 'js/main.js' %}"></script>
+  <!-- Intégration d'Animate.css pour des animations -->
+   <link rel="stylesheet" href="{% static 'css/tailwind.min2.css' %}">
+  <!-- Lien vers le fichier CSS personnalisé existant -->
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <style>
+    /* Styles personnalisés pour compléments spécifiques */
+    .imo {
+      font-size: 4rem; /* Taille de l'emoji */
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col">
+  {% include "part/header.html" %}
+
+  <div class="container max-w-4xl mx-auto my-12 p-8 bg-gray-800 rounded-2xl shadow-2xl animate__animated animate__fadeIn">
+    <!-- Titre avec emoji -->
+    <div class="flex items-center mb-6">
+      <span class="imo animate__animated animate__bounceIn">{{emoji}}</span>
+      <h1 class="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
+        Emotion Recognition
+      </h1>
+    </div>
+
+    <!-- Section image et prédiction -->
+    <div class="flex flex-col md:flex-row items-center justify-between bg-gray-900 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <img src="{{ image.image.url }}" alt="Image Uploadée" class="max-w-full md:max-w-xs h-auto rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300">
+      <div class="text-2xl md:text-3xl font-semibold text-indigo-300 mt-4 md:mt-0 md:ml-8">
+        {{predict}}
+      </div>
+    </div>
+
+    <!-- Bouton Nouvelle Prédiction -->
+    <a href="{% url 'home' %}" class="inline-block mt-8 px-6 py-3 text-lg font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-lg hover:from-indigo-600 hover:to-purple-700 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+      Nouvelle Prédiction
+    </a>
+  </div>
+
+  <!-- Script pour animations supplémentaires si nécessaire -->
+  <script>
+    // Ajouter des animations dynamiques si besoin
+    document.addEventListener('DOMContentLoaded', () => {
+      const elements = document.querySelectorAll('.animate__animated');
+      elements.forEach(el => {
+        el.classList.add('animate__fadeInUp');
+      });
+    });
+  </script>
+</body>
+</html>

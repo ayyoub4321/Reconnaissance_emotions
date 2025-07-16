@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+   <link rel="stylesheet" href="{% static 'css/tailwind.min2.css' %}">
+    <title>Diagramme de Flux - Reconnaissance d'Émotions</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            font-family: 'Arial', sans-serif;
+            color: #ecf0f1;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .box {
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            text-align: center;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .box:hover {
+            transform: translateY(-2px);
+        }
+        
+        .start { background: linear-gradient(45deg, #4CAF50, #45a049); }
+        .process { background: linear-gradient(45deg, #2196F3, #1976D2); }
+        .decision { background: linear-gradient(45deg, #FF9800, #F57C00); clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%); }
+        .data { background: linear-gradient(45deg, #9C27B0, #7B1FA2); }
+        .model { background: linear-gradient(45deg, #E91E63, #C2185B); }
+        .end { background: linear-gradient(45deg, #795548, #5D4037); }
+        .ignore { background: linear-gradient(45deg, #607D8B, #455A64); }
+        
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid #34495e;
+            margin: 5px 0;
+        }
+        
+        .split-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px 0;
+        }
+        
+        .branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .label {
+            font-size: 12px;
+            color: #34495e;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        .horizontal-arrow {
+            width: 50px;
+            height: 2px;
+            background: #34495e;
+            position: relative;
+            margin: 10px;
+        }
+        
+        .horizontal-arrow::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid #34495e;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+        
+        .roi-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 600px;
+        }
+        
+        .roi-box {
+            background: linear-gradient(45deg, #00BCD4, #0097A7);
+            padding: 8px 12px;
+            border-radius: 5px;
+            color: white;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            max-width: 500px;
+        }
+        
+        .filter-box {
+            background: linear-gradient(45deg, #8BC34A, #689F38);
+            padding: 6px 10px;
+            border-radius: 4px;
+            color: white;
+            font-size: 11px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen">
+    {% include "part/header.html" %} 
+    <div class="container">
+        
+   
+        <div class="title">Processus de Reconnaissance d'Émotions - Modèle Traditionnel</div>
+        
+        <div class="flowchart">
+            <!-- Début -->
+            <div class="box start">Début</div>
+            <div class="arrow"></div>
+            
+            <!-- Chargement -->
+            <div class="box process">Dossier d'images → Chargement des images (chargerImage)</div>
+            <div class="arrow"></div>
+            
+            <!-- Détection landmarks -->
+            <div class="box process">Détection des landmarks (MediaPipe)</div>
+            <div class="arrow"></div>
+            
+            <!-- Decision landmarks -->
+            <div class="box decision">Landmarks détectés ?</div>
+            
+            <!-- Split Oui/Non -->
+            <div class="split-container">
+                <div class="branch">
+                    <div class="label">Oui</div>
+                    <div class="arrow"></div>
+                    <div class="box process">Extraction du visage (extract_face)</div>
+                    <div class="arrow"></div>
+                    <div class="box process">Redimensionnement (300x400)</div>
+                    <div class="arrow"></div>
+                    
+                    <!-- ROI Extraction -->
+                    <div class="roi-container">
+                        <div class="roi-box">Bouche</div>
+                        <div class="roi-box">Nez</div>
+                        <div class="roi-box">Œil droit</div>
+                        <div class="roi-box">Sourcil droit</div>
+                    </div>
+                    <div class="label">Extraction des ROI</div>
+                    <div class="arrow"></div>
+                    
+                    <!-- Filtres -->
+                    <div class="filter-container">
+                        <div class="filter-box">Gabor</div>
+                        <div class="filter-box">Sobel</div>
+                        <div class="filter-box">Laplacian</div>
+                        <div class="filter-box">HOG</div>
+                        <div class="filter-box">LBP</div>
+                    </div>
+                    <div class="label">Application des filtres</div>
+                    <div class="arrow"></div>
+                    
+                    <div class="box data">Calcul des métriques géométriques<br>(distances, angles, ratios, aire)</div>
+                    <div class="arrow"></div>
+                    
+                    <div class="box data">Construction du vecteur de caractéristiques<br>(47 dimensions)</div>
+                    <div class="arrow"></div>
+                    
+                    <div class="box data">Ajout au DataFrame<br>(avec étiquette d'émotion)</div>
+                    <div class="arrow"></div>
+                    
+                    <div class="box data">Sauvegarde CSV (dataPath2V2.csv)</div>
+                </div>
+                
+                <div class="branch">
+                    <div class="label">Non</div>
+                    <div class="arrow"></div>
+                    <div class="box ignore">Ignorer l'image</div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- Choix du mode -->
+            <div class="box decision">Mode choisi ?</div>
+            
+            <!-- Split Entraînement/Prédiction -->
+            <div class="split-container">
+                <div class="branch">
+                    <div class="label">Entraînement</div>
+                    <div class="arrow"></div>
+                    <div class="box model">Chargement CSV</div>
+                    <div class="arrow"></div>
+                    <div class="box model">Split train/test</div>
+                    <div class="arrow"></div>
+                    <div class="box model">Recherche hyperparamètres</div>
+                    <div class="arrow"></div>
+                    <div class="box model">Évaluation modèles</div>
+                    <div class="arrow"></div>
+                    <div class="box model">Sauvegarde modèles .pkl</div>
+                    <div class="arrow"></div>
+                    <div class="box data">Sauvegarde résultats<br>(Resultats_Models2V2.csv)</div>
+                </div>
+                
+                <div class="branch">
+                    <div class="label">Prédiction</div>
+                    <div class="arrow"></div>
+                    <div class="box process">Chargement image unique</div>
+                    <div class="arrow"></div>
+                    <div class="box process">Extraction caractéristiques</div>
+                    <div class="arrow"></div>
+                    <div class="box model">Chargement modèle .pkl</div>
+                    <div class="arrow"></div>
+                    <div class="box model">Prédiction de l'émotion</div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- Fin -->
+            <div class="box end">Fin</div>
+        </div>
+    </div>
+</body>
+</html>

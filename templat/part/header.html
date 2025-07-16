@@ -1,0 +1,59 @@
+{% load static %}
+<style>
+    /* Styles personnalisés pour compléments spécifiques */
+    .nav-link:hover {
+        color: #c4b5fd; /* Violet clair au survol */
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+    .hamburger {
+        display: none;
+    }
+    @media (max-width: 768px) {
+        .nav-menu {
+            display: none;
+        }
+        .nav-menu.active {
+            display: flex;
+        }
+        .hamburger {
+            display: block;
+        }
+    }
+</style>
+
+<header class="w-full bg-gray-900 sticky top-0 z-50 shadow-lg animate__animated animate__fadeInDown">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4" style="width: 100%;">
+        <!-- Logo -->
+        <div class="logo text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
+            EMO
+        </div>
+
+        <!-- Navigation -->
+        <nav>
+            <ul class="nav-menu flex space-x-6 text-gray-300 text-lg font-medium">
+                <li><a href="{% url 'home' %}" class="nav-link hover:text-purple-400 transition-colors">Home</a></li>
+                <li><a href="{% url 'rapport' %}" class="nav-link hover:text-purple-400 transition-colors">rapport</a></li>
+                <li><a href="{% url 'resume' %}" class="nav-link hover:text-purple-400 transition-colors">resume</a></li>
+                <li><a href="{% url 'modelsML' %}" class="nav-link hover:text-purple-400 transition-colors">Models</a></li>
+            </ul>
+            <!-- Bouton Hamburger pour mobile -->
+            <button class="hamburger text-2xl text-indigo-300 md:hidden">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </div>
+</header>
+
+<!-- Script pour gérer le menu hamburger -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.innerHTML = navMenu.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+    });
+</script>

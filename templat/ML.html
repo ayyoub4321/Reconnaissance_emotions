@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Modèles de Machine Learning</title>
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/tailwind.min2.css' %}">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .model {
+      background-color: #fff;
+      border-left: 5px solid #2980b9;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+    }
+    .model h2 {
+      color: #2980b9;
+    }
+    ul {
+      margin-top: 5px;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #1a73e8;
+    }
+  </style>
+</head>
+<body>
+{% include "part/header.html" %}
+
+<h1>Modèles de Machine Learning – Explication, Avantages et Inconvénients</h1>
+
+<div class="model">
+  <h2>1. KNN (K-Nearest Neighbors)</h2>
+  <p>
+    <span class="highlight">Fonctionnement :</span> Ce modèle classe un point en fonction des K points les plus proches dans l’espace. Par exemple, pour reconnaître un chiffre manuscrit, KNN compare avec les chiffres les plus proches déjà étiquetés.
+  </p>
+  <ul>
+    <li><strong>Avantages :</strong> Très simple, pas besoin d’entraînement, efficace sur petits ensembles de données.</li>
+    <li><strong>Inconvénients :</strong> Très lent sur grands datasets, sensible au bruit et aux données non normalisées.</li>
+  </ul>
+</div>
+
+<div class="model">
+  <h2>2. Decision Tree</h2>
+  <p>
+    <span class="highlight">Fonctionnement :</span> Arbre qui prend des décisions en posant des questions successives sur les données (comme un arbre de choix). Idéal pour des règles claires comme "Si âge &lt; 18 → enfant".
+  </p>
+  <ul>
+    <li><strong>Avantages :</strong> Interprétable, fonctionne bien sur données mixtes (numériques et catégorielles).</li>
+    <li><strong>Inconvénients :</strong> Risque de surapprentissage, faible généralisation sur données nouvelles.</li>
+  </ul>
+</div>
+
+<div class="model">
+  <h2>3. Random Forest</h2>
+  <p>
+    <span class="highlight">Fonctionnement :</span> Combine plusieurs arbres de décision créés aléatoirement pour donner une décision plus robuste et moins sensible aux erreurs.
+  </p>
+  <ul>
+    <li><strong>Avantages :</strong> Bonne précision, réduit l’overfitting, fonctionne bien sur données bruitées.</li>
+    <li><strong>Inconvénients :</strong> Moins interprétable, plus lent que les arbres seuls.</li>
+  </ul>
+</div>
+
+<div class="model">
+  <h2>4. Logistic Regression</h2>
+  <p>
+    <span class="highlight">Fonctionnement :</span> Modèle linéaire qui prédit une probabilité (ex : probabilité d’être malade ou pas selon les symptômes). Il utilise une fonction logistique (sigmoïde).
+  </p>
+  <ul>
+    <li><strong>Avantages :</strong> Simple, rapide à entraîner, interprétable.</li>
+    <li><strong>Inconvénients :</strong> Ne fonctionne bien que si la relation entre les variables est linéaire.</li>
+  </ul>
+</div>
+
+<div class="model">
+  <h2>5. Gradient Boosting</h2>
+  <p>
+    <span class="highlight">Fonctionnement :</span> Chaque arbre corrige les erreurs du précédent. Il améliore progressivement les performances du modèle, idéal pour les compétitions.
+  </p>
+  <ul>
+    <li><strong>Avantages :</strong> Haute précision, efficace pour petits et moyens datasets.</li>
+    <li><strong>Inconvénients :</strong> Lent à entraîner, sensible aux paramètres et au surapprentissage.</li>
+  </ul>
+</div>
+
+<div class="model">
+  <h2>6. XGBoost</h2>
+  <p>
+    <span class="highlight">Fonctionnement :</span> Optimisation de Gradient Boosting avec régularisation, parallélisme, et gestion automatique des valeurs manquantes. Très utilisé en compétition Kaggle.
+  </p>
+  <ul>
+    <li><strong>Avantages :</strong> Très rapide, performant, puissant sur données structurées.</li>
+    <li><strong>Inconvénients :</strong> Plus complexe à régler, nécessite des ressources importantes.</li>
+  </ul>
+</div>
+
+<div class="model">
+  <h2>7. LightGBM</h2>
+  <p>
+    <span class="highlight">Fonctionnement :</span> Utilise une approche par histogramme pour accélérer l'entraînement. Idéal pour des données massives (ex : millions de lignes).
+  </p>
+  <ul>
+    <li><strong>Avantages :</strong> Très rapide, faible consommation mémoire, excellente précision.</li>
+    <li><strong>Inconvénients :</strong> Moins performant sur petits ensembles, sensible à l’ordre des données.</li>
+  </ul>
+</div>
+
+<div class="model">
+  <h2>8. MLP (Multilayer Perceptron)</h2>
+  <p>
+    <span class="highlight">Fonctionnement :</span> Réseau de neurones avec plusieurs couches cachées. Il apprend à prédire des classes à partir de données complexes, comme reconnaître un visage ou une émotion.
+  </p>
+  <ul>
+    <li><strong>Avantages :</strong> Peut modéliser des relations très complexes et non linéaires.</li>
+    <li><strong>Inconvénients :</strong> Nécessite beaucoup de données, sensible à l’overfitting et demande du temps d’entraînement.</li>
+  </ul>
+</div>
+
+</body>
+</html>

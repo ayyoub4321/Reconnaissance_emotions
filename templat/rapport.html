@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport - Reconnaissance des Émotions</title>
+    <link href="{% static 'css/tailwind.min2.css' %}" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+{% include "part/header.html" %} 
+    <!-- En-tête -->
+    <header class="bg-indigo-700 text-white text-center py-4">
+        
+        <h1 class="text-2xl font-bold">Rapport : Reconnaissance des Émotions</h1>
+    </header>
+
+    <!-- Conteneur PDF en pleine page -->
+    <div class="w-full h-[calc(100vh-4rem)]">
+        <iframe
+            src="{% static 'fichier/Rapport_Reconnaissance_Émotions.pdf' %}"
+            class="w-full h-full border-none"
+            frameborder="0"
+            style="height: calc(100vh - 4rem);">
+        </iframe>
+    </div>
+
+</body>
+
+</html>

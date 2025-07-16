@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Évaluation des Modèles</title>
+ 
+   <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+   <link rel="stylesheet" href="{% static 'css/tailwind.min2.css' %}">
+
+  <style>
+    /* Styles personnalisés pour la coloration dynamique des matrices */
+    .matrix-cell {
+      transition: background-color 0.3s ease;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen">
+  {% include "part/header.html" %}
+
+  <div class="container max-w-6xl mx-auto my-12 p-6 sm:p-8 bg-gray-800 rounded-2xl shadow-2xl animate__animated animate__fadeIn">
+    <!-- Titre principal -->
+    <h1 class="text-3xl md:text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500 mb-8">
+      Résultats des Modèles de Classification
+    </h1>
+
+    <!-- Tableau général -->
+    <div class="overflow-x-auto mb-12">
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-700 text-indigo-300">
+            <th class="p-4 text-center font-semibold"><a href="{% url 'modelsExpli' %}" class="hover:text-purple-400 transition-colors">Modèle</a></th>
+            <th class="p-4 text-center font-semibold">Exactitude</th>
+            <th class="p-4 text-center font-semibold">Précision</th>
+            <th class="p-4 text-center font-semibold">Rappel</th>
+            <th class="p-4 text-center font-semibold">F1-score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for modele in modeles %}
+          <tr class="bg-gray-800 hover:bg-gray-700 transition-colors">
+            <td class="p-4 text-center border-t border-gray-600">{{ modele.Modèle }}</td>
+            <td class="p-4 text-center border-t border-gray-600">{{ modele.Exactitude|floatformat:4 }}</td>
+            <td class="p-4 text-center border-t border-gray-600">{{ modele.Précision|floatformat:4 }}</td>
+            <td class="p-4 text-center border-t border-gray-600">{{ modele.Rappel|floatformat:4 }}</td>
+            <td class="p-4 text-center border-t border-gray-600">{{ modele.F1_score|floatformat:4 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Matrices de confusion -->
+    {% for modele in modeles %}
+    <div class="confusion-section mb-12 animate__animated animate__fadeInUp" style="animation-delay: {{ forloop.counter}}s">
+      <h2 class="text-2xl font-semibold text-center text-indigo-300 mb-6">Matrice de Confusion - {{ modele.Modèle }}</h2>
+      <div class="overflow-x-auto">
+        <table class="matrix-table w-full border-collapse" id="matrix-{{ forloop.counter }}"></table>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Script pour générer les matrices de confusion -->
+  <script>
+    const matrices = [
+      {% for modele in modeles %}
+      {
+        name: "{{ modele.Modèle }}",
+        matrix: {{ modele.MatriceConfusion|safe }}
+      },
+      {% endfor %}
+    ];
+
+    function generateMatrix(matrixData, containerId) {
+      const container = document.getElementById(containerId);
+      const max = Math.max(...matrixData.flat());
+      const tbody = document.createElement("tbody");
+
+      matrixData.forEach(row => {
+        const tr = document.createElement("tr");
+        row.forEach(value => {
+          const td = document.createElement("td");
+          td.className = "matrix-cell p-4 text-center font-bold border border-gray-600";
+          const intensity = Math.floor((value / max) * 255);
+          td.style.backgroundColor = `rgb(${30}, ${30 + intensity}, ${50 + intensity})`;
+          td.textContent = value;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+
+      container.appendChild(tbody);
+    }
+
+    matrices.forEach((m, index) => {
+      generateMatrix(m.matrix, "matrix-" + (index + 1));
+    });
+  </script>
+</body>
+</html>
